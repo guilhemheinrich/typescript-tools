@@ -13,7 +13,7 @@
     "dependencies": {
         "@types/archiver": "^5.1.0",
         "@types/extract-zip": "^1.6.2",
-        "@types/fs-extra": "^8.0.0",
+        "@types/fs-extra": "11.0.0",
         "@types/json-pointer": "^1.0.30",
         "@types/node": "^12.0.1",
         "@types/unzipper": "^0.10.3",

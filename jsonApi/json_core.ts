@@ -24,8 +24,12 @@ namespace jsonapi {
       * @return The newly created flattified object.
       */
     export function flatten(data: {}) {
-        let flattened_data = {}
-        let tmp_data = jsonpointer.dict(data)
+        let flattened_data: {
+            [key: string]: any
+        } = {}
+        let tmp_data = jsonpointer.dict(data) as {
+            [key: string]: any
+        }
         for (let key of Object.keys(tmp_data)) {
             flattened_data[jsonpointer.unescape(key)] = tmp_data[key]
         }
@@ -68,7 +72,30 @@ namespace jsonapi {
         return out;
     }
     
-    
+    /**
+      * Do the equivalent of a set difference between object1 and object2. Note that this operation is not symetrical: it will inspect in object2 only the poperties present in object1.
+      * @param object1 The JavaScript object to watch difference from.
+      * @param object2 The JavaScript object to holding differences.
+      * @return An object holding only the differences, which is a "subobject" of object1, with different primitive value
+      */
+    export function getDifferenceBetweenObjects(object1: {}, object2: {}) {
+        let flattened1 = flatten(object1)
+        console.log(flattened1)
+        let pointer_keys = Object.keys(flattened1)
+        let flattened2 = flatten(object2)
+        let difference_flat: {
+            [key: string]: any
+        } = {}
+        for (let key of pointer_keys) {
+            if (flattened2[key] !== undefined && flattened1[key] !== flattened2[key]) {
+                difference_flat[key] = flattened2[key]
+            }
+        }
+        return unflatten(difference_flat)
+
+    }
+
+
     export function propertiesDifference(object1: {}, object2: {}) {
         let summary: {
             properties_only_in_object_1: {[property_name: string]: any},
